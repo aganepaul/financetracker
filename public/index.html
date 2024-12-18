@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Personal Finance Tracker</h1>
+    </header>
+    <main>
+        <!-- Authentication Section -->
+        <section id="auth-section">
+            <form id="register-form">
+                <h2>Register</h2>
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+
+            <form id="login-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="hidden">
+            <h2>Welcome to Your Dashboard</h2>
+            <button id="logout-btn">Logout</button>
+            <div id="transactions">
+                <h3>Transactions</h3>
+                <ul id="transaction-list">
+                    <!-- Transactions with Edit/Delete buttons will populate here -->
+                </ul>
+            </div>
+            <form id="add-transaction-form">
+                <h3>Add Transaction</h3>
+                <input type="text" id="transaction-name" placeholder="Transaction Name" required>
+                <input type="number" id="transaction-amount" placeholder="Amount" required>
+                <select id="transaction-category">
+                    <option value="General">General</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Entertainment">Entertainment</option>
+                </select>
+                <select id="transaction-type">
+                    <option value="Income">income</option>
+                    <option value="Expense">expense</option>
+                </select>
+                <button type="submit">Add</button>
+            </form>
+
+            <!-- Modal for Editing Transaction -->
+            <div id="edit-modal" class="hidden">
+                <h3>Edit Transaction</h3>
+                <form id="edit-transaction-form">
+                    <input type="text" id="edit-transaction-name" placeholder="Transaction Name" required>
+                    <input type="number" id="edit-transaction-amount" placeholder="Amount" required>
+                    <select id="edit-transaction-category">
+                        <option value="General">General</option>
+                        <option value="Food">Food</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Entertainment">Entertainment</option>
+                    </select>
+                    <select id="edit-transaction-type">
+                        <option value="Income">income</option>
+                        <option value="Expense">expense</option>
+                    </select>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" id="cancel-edit">Cancel</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
