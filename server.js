@@ -15,8 +15,18 @@ const app = express();
 const PORT = 5000;
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware
+const corsOptions = {
+  origin: ["https://your-vercel-url.vercel.app"], // Replace with your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // Database connection
 mongoose
@@ -46,9 +56,6 @@ app.post('/api/test-token', (req, res) => {
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
-
-// Serve static frontend files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve the frontend HTML file at the root route
 app.get('/', (req, res) => {
