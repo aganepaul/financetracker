@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = "/api";
+    const API_URL = 
+    window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api' 
+    : 'https://financetracker-delta.vercel.app/api';
 
     // Registration Form
     document.getElementById('register-form').addEventListener('submit', async (e) => {
