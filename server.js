@@ -12,36 +12,29 @@ const transactionRoutes = require('./routes/transactionRoutes'); // Transaction 
 dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Use dynamic port if provided
 
 // Middleware
-// Middleware
-const corsOptions = {
-  origin: ["https://your-vercel-url.vercel.app"], // Replace with your frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
-app.use(express.json());
-
-// Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "https://your-vercel-url.vercel.app", // Replace with your deployed frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // Enable credentials if needed (e.g., cookies)
+  })
+);
+app.use(bodyParser.json());
 
 // Database connection
 mongoose
-  .connect(
-    process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/financeDB',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Database connection error:', err));
 
 // JWT Secret Key
-const JWT_SECRET = process.env.JWT_SECRET || 'default_super_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Simple Route to Test JWT
 app.post('/api/test-token', (req, res) => {
@@ -57,10 +50,15 @@ app.post('/api/test-token', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
 
-// Serve the frontend HTML file at the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Serve static frontend files if needed
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  // Serve the frontend HTML file at the root route
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+}
 
 // Start the server
 app.listen(PORT, () => {
